@@ -1,0 +1,85 @@
+<!-- Oppgaven er å lage en helt enkel quiz med tre spørsmål - hver med tre alternativer. Finn gjerne på egne, men her er et forslag:
+1: Hva er 2+2? a) 3 b) 4 c) 5
+ a) Oslo b) Larvik c) Stavern
+3: Hvor gammel er Terje? a) 58 b) 38 c) 48 
+Når man åpner siden skal første spørsmål vises. 
+Vis en knapp for hvert alternativ. Hvis man trykker på riktig svar, vises teksten "Riktig!" og i tillegg neste spørsmål. 
+Ellers vises teksten "Feil!" og i tillegg neste spørsmål. 
+
+Dere skal ikke telle poeng. Kun vise riktig eller feil + neste spørsmål. Etter siste spørsmål kan det stå "Fullført" eller noe tilsvarende.
+
+Start med å gå gjennom de tre grunnferdigheten i JavaScript sammen og sørg for at alle forstår dem. Etter det kan dere starte på selve oppgaven. Bruk Live Share og prøv å unngå at den som vet best skriver alt. Tenk heller motsatt: den som er mest usikker kan ta "lead" på å skrive inn kode. Så kan denne stille spørsmål og be om hjelp og de andre kan guide fremover. Bytt uansett på å skrive inn så ikke en og samme blir sittende gjennom hele oppgaven. Når avdekker at en av dere ikke forstår et konsept eller hva-som-helst, har dere funnet "gull". De to andre forklarer og oppklarer. Lag gjerne små enkle eksempler for å se om dere har forstått riktig. Å bli flinkere til å forklare andre og bruke fagspråket er superviktig og noe bedriftene ser etter, så grip sjansen til å øve på dette med hverandre. Lykke til - og be meg gjerne bli med om dere ikke får dette helt til, altså enten faglig eller kanskje først og fremst å jobbe sammen alle tre.  -->
+
+<html>
+<head>
+</head>
+<body>
+	<div>
+		<h1>Quizen</h1>
+		<div id ="question">
+            <h2>Hva er 2+2?</h2>
+			<button onclick="firstWrong()">3</button>
+			<button onclick="firstCorrect()">4</button>
+			<button onclick="firstWrong()">5</button>
+        </div>
+</div>
+	
+</body>
+<script>
+	function firstCorrect() {
+		let q = document.getElementById("question")
+		q.innerHTML = `
+        <h3>Riktig!</h3>
+        <h2>Hva er Norges hovedstad?</h2>
+		<button onclick="secondCorrect()">Oslo</button>
+		<button onclick="secondWrong()">Larvik</button>
+		<button onclick="secondWrong()">Stavern</button>
+        `
+	}
+    function firstWrong() {
+		let q = document.getElementById("question")
+		q.innerHTML = `
+        <h3>Feil!</h3>
+        <h2>Hva er Norges hovedstad?</21>
+		<button onclick="secondCorrect()">Oslo</button>
+		<button onclick="secondWrong()">Larvik</button>
+		<button onclick="secondWrong()  ">Stavern</button>
+        `
+	}
+    function secondCorrect() {
+		let q = document.getElementById("question")
+		q.innerHTML = `
+        <h3>Riktig!</h3>
+        <h2>Hvor gammel er terje?</h2>
+		<button onclick="thirdWrong()">58</button>
+	    <button onclick="thirdWrong()">38</button>
+		<button onclick="thirdCorrect()">48</button>
+        `
+	}
+    function secondWrong() {
+		let q = document.getElementById("question")
+		q.innerHTML = `
+        <h3>Feil!</h3>
+        <h2>Hvor gammel er Terje?</h2>
+		<button onclick="thirdWrong()">58</button>
+		<button onclick="thirdWrong()">38</button>
+		<button onclick="thirdCorrect()">48</button>
+        `
+	}
+    function thirdCorrect() {
+		let q = document.getElementById("question")
+		q.innerHTML = `
+        <h3>Riktig!</h3>
+        <h3>Fulført</h3>
+        `
+	}
+    function thirdWrong() {
+		let q = document.getElementById("question")
+		q.innerHTML = `
+        <h3>Feil!</h3>
+        <h3>Fulført</h3>
+        `
+	}
+</script>
+</html>
+</html>	

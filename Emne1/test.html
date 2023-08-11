@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>Trafikklys</title>
+	<style>
+		:root{
+			--standard_size: 3rem;
+			--standard_padding: 1rem;
+		}
+
+		div.trafficLight {
+			width: var(--standard_size);
+			height: 10rem;
+			display: flex;
+			flex-direction: column;
+			background-color: black;
+			padding: var(--standard_padding);
+			gap: var(--standard_padding);
+			cursor: pointer;
+		}
+
+		div.light {
+			background-color: red;
+			border-radius: 50%;
+			width: var(--standard_size);
+			height: var(--standard_size);
+		}
+	</style>
+</head>
+<body>
+	<div class="trafficLight" onclick="cycleLights(event)">
+		<div class="light" style="background-color: red;"></div>
+		<div class="light" style="background-color: gray;"></div>
+		<div class="light" style="background-color: gray;"></div>
+	</div>                                                                  
+	<script> 
+		let light = {
+			states: [
+				["red", "gray", "gray"],
+				["red", "yellow", "gray"],
+				["gray", "gray", "green"],
+				["gray", "yellow", "gray"]
+			],
+			current: 0
+		}
+
+        history.replaceState({current:light.current},null,null)
+	
+		function cycleLights(event){
+            let target = event.target
+			if(event.target.className == "light") target = target.parentElement
+			light.current += 1
+			if(light.current>=light.states.length) light.current = 0
+            updateHTML(target)
+            history.pushState({current: light.current}, null, null)
+    	}
+
+        function updateHTML(mylight){
+            mylight.innerHTML = ""
+	    			+ `<div class="light" style="background-color: ${light.states[light.current][0]};"></div>`
+	    			+ `<div class="light" style="background-color: ${light.states[light.current][1]};"></div>`
+	    			+ `<div class="light" style="background-color: ${light.states[light.current][2]};"></div>`
+        }
+
+        window.addEventListener("popstate", () => {
+            light.current = history.state.current
+            updateHTML(document.getElementsByClassName("trafficLight")[0])
+        })
+	</script>
+</body>
+</html>

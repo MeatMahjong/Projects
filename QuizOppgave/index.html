@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz</title>
+	<style>
+        *{
+            text-align:center;
+            line-height: 150%;  
+        }
+		#spørsmål {
+            font-size: xx-large;
+			font-style: italic;
+		}
+        #question{
+            font-size: xx-large;
+            font-weight: bolder;
+        }
+		.horizontal {
+			display: flex;
+		}
+        button{
+            font-size: x-large;
+            padding: 10px;
+            margin: 10px; 
+            border-radius: 10px;
+            background: #ffffff
+        }
+        button:hover{
+            transform:translateY(-10px);
+            background: #dddddd
+        }
+	</style>    
+</head>
+<body>
+	<div>
+		<h1 style="letter-spacing: 8; font-size: 48px">Q U I Z</h1>
+		<div id ="question"><br/></div>
+        <button onclick="location.reload()">Restart</button>
+    </div>
+</body>
+<script>
+	let current_question = 0
+    let current_score = 0
+	let questions = [
+		["Hva er 2+2?", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+		["Hva er hovedstaden i Norge?", "Oslo", "Larvik", "Stavern", "Porsgrunn", "Bergen", "Stockholm"],
+		["Hvor gammel er Terje?", "58", "38", "88", "48", "28", "68", "78"],
+        ["Hvilke av disse er ikke ekte html tags?", "&lt;q&gt;", "&lt;b&gt", "&lt;i&gt", "&lt;t&gt", "&lt;a&gt", "&lt;p&gt", "&lt;u&gt", "&lt;l&gt"],
+        ["Javascript har et ??? type system", "static", "gradual", "linear", "dynamic"]
+	]
+	let answers = [4,0,3,3,3]
+    let q = document.getElementById("question")
+
+    
+	function setupQuestions() {
+        q.innerHTML += /*html*/`
+            <h1 id="spørsmål">${questions[current_question][0]}</h1>
+            <div class="horizontal">
+        `
+        for(let i = 1; i < questions[current_question].length; i++) {
+            q.innerHTML += /*html*/`<button onclick="onAnswer(${i-1})">${questions[current_question][i]}</button>`
+        }
+        q.innerHTML += /*html*/`
+            </div><br/>
+            Current Score: ${current_score}
+        `
+    }
+        
+    setupQuestions()
+    history.pushState({content: q.innerHTML, current: current_question, score: current_score}, null, null)
+        
+
+	function onAnswer(answer){
+		if(answer==answers[current_question]) {
+			q.innerHTML = `Riktig<br/>`
+            current_score += 1
+		} else {
+			q.innerHTML = `Feil<br/>`
+		}
+		current_question += 1
+		if(current_question < questions.length) {
+			setupQuestions()
+		} else {
+			q.innerHTML += `Fullført!
+            <br/>
+            Final Score: ${current_score}/${questions.length}
+            ${current_score==questions.length ? "🎉🎉🎉" : ""}
+            `
+		}
+        history.pushState({content: q.innerHTML, current: current_question, score: current_score}, null, null)
+    }
+
+    window.addEventListener("popstate", () => {
+        current_question = history.state.current
+        current_score = history.state.score
+        q.innerHTML = history.state.content
+    })
+</script>
+</html>
