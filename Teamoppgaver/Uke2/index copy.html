@@ -24,207 +24,63 @@
     </style>
 </head>
 <body>
+    <link rel="preload" as="image" href="img/dog.jpg" />
+    <link rel="preload" as="image" href="img/frog.jpg" />
+    <link rel="preload" as="image" href="img/tiger.jpg" />
+    <link rel="preload" as="image" href="img/horse.jpg" />
+    <link rel="preload" as="image" href="img/elephant.jpg" />
+    <link rel="preload" as="image" href="img/chicken.jpg" />
+    <link rel="preload" as="image" href="img/spider.jpg" />
+    <link rel="preload" as="image" href="img/cat.jpg" />
+    
     <div id="board">
-    <!--
-         R
-       C     1        2        3        4
-         1   Dog      Frog     Horse    Chicken
-         2   Spider   Frog     Spider   Tiger
-         3   Chicken  Dog      Elephant Cat
-         4   Cat      Elephant Horse    Tiger
-    -->
-
+        <div onclick="pick_image(0)"></div>
+        <div onclick="pick_image(1)"></div>
+        <div onclick="pick_image(2)"></div>
+        <div onclick="pick_image(3)"></div>
+        <div onclick="pick_image(4)"></div>
+        <div onclick="pick_image(5)"></div>
+        <div onclick="pick_image(6)"></div>
+        <div onclick="pick_image(7)"></div>
+        <div onclick="pick_image(8)"></div>
+        <div onclick="pick_image(9)"></div>
+        <div onclick="pick_image(10)"></div>
+        <div onclick="pick_image(11)"></div>
+        <div onclick="pick_image(12)"></div>
+        <div onclick="pick_image(13)"></div>
+        <div onclick="pick_image(14)"></div>
+        <div onclick="pick_image(15)"></div>
     </div>
     <script>
         let grid = [
-            ["Dog", "Frog", "Horse", "Chicken"]
-            ["Spider", "Frog","Spider", "Tiger"],
-            ["Chicken", "Dog", "Elephant", "Cat"],
-            ["Cat", "Elephant", "Horse", "Tiger"]
+            "dog.jpg", "frog.jpg", "horse.jpg", "chicken.jpg"
+            ,"spider.jpg", "frog.jpg","spider.jpg", "tiger.jpg"
+            ,"chicken.jpg", "dog.jpg", "elephant.jpg", "cat.gif"
+            ,"cat.gif", "elephant.jpg", "horse.jpg", "tiger.jpg"
         ]
-        function reset(){
-            document.getElementById('board').innerHTML = /*html*/`
-                <div id="r1c1" onclick="r1c1()"></div>
-                <div id="r1c2" onclick="r1c2()"></div>
-                <div id="r1c3" onclick="r1c3()"></div>
-                <div id="r1c4" onclick="r1c4()"></div>
-                <div id="r2c1" onclick="r2c1()"></div>
-                <div id="r2c2" onclick="r2c2()"></div>
-                <div id="r2c3" onclick="r2c3()"></div>
-                <div id="r2c4" onclick="r2c4()"></div>
-                <div id="r3c1" onclick="r3c1()"></div>
-                <div id="r3c2" onclick="r3c2()"></div>
-                <div id="r3c3" onclick="r3c3()"></div>
-                <div id="r3c4" onclick="r3c4()"></div>
-                <div id="r4c1" onclick="r4c1()"></div>
-                <div id="r4c2" onclick="r4c2()"></div>
-                <div id="r4c3" onclick="r4c3()"></div>
-                <div id="r4c4" onclick="r4c4()"></div>
-                `
-        }
-        function runde_to() {
-            document.getElementById('board').innerHTML = /*html*/`
-                <div id="r1c1" onclick="reset()"></div>
-                <div id="r1c2" onclick="reset()"></div>
-                <div id="r1c3" onclick="reset()"></div>
-                <div id="r1c4" onclick="reset()"></div>
-                <div id="r2c1" onclick="reset()"></div>
-                <div id="r2c2" onclick="reset()"></div>
-                <div id="r2c3" onclick="reset()"></div>
-                <div id="r2c4" onclick="reset()"></div>
-                <div id="r3c1" onclick="reset()"></div>
-                <div id="r3c2" onclick="reset()"></div>
-                <div id="r3c3" onclick="reset()"></div>
-                <div id="r3c4" onclick="reset()"></div>
-                <div id="r4c1" onclick="reset()"></div>
-                <div id="r4c2" onclick="reset()"></div>
-                <div id="r4c3" onclick="reset()"></div>
-                <div id="r4c4" onclick="reset()"></div>
-            `
-        }
-        reset()
+        grid.sort((a,b) => Math.random() - 0.5)
         
-        function r1c1() {
-            runde_to()
-            document.getElementById("r1c1").outerHTML = /*HTML*/`<div id="r1c1" onclick="reset"><img src="img/dog.jpg"/></div>`
-            document.getElementById("r3c2").outerHTML = /*HTML*/`<div id="r3c2" onclick="r1c1_riktig()"></div>`
-        }
-        function r1c1_riktig() {
-            document.getElementById("r3c2").outerHTML = /*HTML*/`<div id = "r3c2" onclick="reset()"><img src="img/dog.jpg"/></div>`
+        let pictures = Array.prototype.slice.call(document.getElementById("board").children)
+        let picked_animal = -1
+
+        function pick_image(index) {
+            if(picked_animal == -1) {
+                picked_animal = index
+                pictures[index].innerHTML = /*html*/`<img src="img/${grid[index]}"/>`
+            } else if(grid[picked_animal] == grid[index] && index != picked_animal) {
+                picked_animal = -1
+                pictures[index].innerHTML = /*html*/`<img src="img/${grid[index]}"/>`
+            } else if(picked_animal != index){
+                picked_animal = -1
+                reset();
+            }
         }
 
-        function r1c2() {
-            runde_to()
-            document.getElementById("r1c2").outerHTML = /*HTML*/`<div id="r1c2" onclick=""><img src="img/frog.jpg"/></div>`
-            document.getElementById("r2c2").outerHTML = /*HTML*/`<div id="r2c2" onclick="r1c2_riktig()"></div>`
-        }
-        function r1c2_riktig() {
-            document.getElementById("r2c2").outerHTML = /*HTML*/`<div id = "r2c2" onclick="reset()"><img src="img/frog.jpg"/></div>`
-        }
+        function reset(){
+            pictures.forEach((e, index) => {
+                e.innerHTML = /*html*/``
+            })
 
-        function r1c3() {
-            runde_to()
-            document.getElementById("r1c3").outerHTML = /*HTML*/`<div id="r1c3" onclick=""><img src="img/horse.jpg"/></div>`
-            document.getElementById("r4c3").outerHTML = /*HTML*/`<div id="r4c3" onclick="r1c3_riktig()"></div>`
-        }
-        function r1c3_riktig() {
-            document.getElementById("r4c3").outerHTML = /*HTML*/`<div id = "r4c3" onclick="reset()"><img src="img/horse.jpg"/></div>`
-        }
-
-        function r1c4() {
-            runde_to()
-            document.getElementById("r1c4").outerHTML = /*HTML*/`<div id="r1c4" onclick=""><img src="img/chicken.jpg"/></div>`
-            document.getElementById("r3c1").outerHTML = /*HTML*/`<div id="r3c1" onclick="r1c4_riktig()"></div>`
-        }
-        function r1c4_riktig() {
-            document.getElementById("r3c1").outerHTML = /*HTML*/`<div id = "r3c1" onclick="reset()"><img src="img/chicken.jpg"/></div>`
-        }
-
-        function r2c1() {
-            runde_to()
-            document.getElementById("r2c1").outerHTML = /*HTML*/`<div id="r2c1" onclick=""><img src="img/spider.jpg"/></div>`
-            document.getElementById("r2c3").outerHTML = /*HTML*/`<div id="r2c3" onclick="r2c1_riktig()"></div>`
-        }
-        function r2c1_riktig() {
-            document.getElementById("r2c3").outerHTML = /*HTML*/`<div id = "r2c3" onclick="reset()"><img src="img/spider.jpg"/></div>`
-        }
-
-        function r2c2() {
-            runde_to()
-            document.getElementById("r2c2").outerHTML = /*HTML*/`<div id="r2c2" onclick=""><img src="img/frog.jpg"/></div>`
-            document.getElementById("r1c2").outerHTML = /*HTML*/`<div id="r1c2" onclick="r2c2_riktig()"></div>`
-        }
-        function r2c2_riktig() {
-            document.getElementById("r1c2").outerHTML = /*HTML*/`<div id = "r1c2" onclick="reset()"><img src="img/frog.jpg"/></div>`
-        }
-
-        function r2c3() {
-            runde_to()
-            document.getElementById("r2c3").outerHTML = /*HTML*/`<div id="r2c3" onclick=""><img src="img/spider.jpg"/></div>`
-            document.getElementById("r2c1").outerHTML = /*HTML*/`<div id="r2c1" onclick="r2c3_riktig()"></div>`
-        }
-        function r2c3_riktig() {
-            document.getElementById("r2c1").outerHTML = /*HTML*/`<div id = "r2c1" onclick="reset()"><img src="img/spider.jpg"/></div>`
-        }
-        function r2c4() {
-            runde_to()
-            document.getElementById("r2c4").outerHTML = /*HTML*/`<div id="r2c4" onclick=""><img src="img/tiger.jpg"/></div>`
-            document.getElementById("r4c4").outerHTML = /*HTML*/`<div id="r4c4" onclick="r2c4_riktig()"></div>`
-        }
-        function r2c4_riktig() {
-            document.getElementById("r4c4").outerHTML = /*HTML*/`<div id = "r4c4" onclick="reset()"><img src="img/tiger.jpg"/></div>`
-        }
-
-        function r3c1() {
-            runde_to()
-            document.getElementById("r3c1").outerHTML = /*HTML*/`<div id="r3c1" onclick=""><img src="img/chicken.jpg"/></div>`
-            document.getElementById("r1c4").outerHTML = /*HTML*/`<div id="r1c4" onclick="r3c1_riktig()"></div>`
-        }
-        function r3c1_riktig() {
-            document.getElementById("r1c4").outerHTML = /*HTML*/`<div id = "r1c4" onclick="reset()"><img src="img/chicken.jpg"/></div>`
-        }
-
-        function r3c2() {
-            runde_to()
-            document.getElementById("r3c2").outerHTML = /*HTML*/`<div id="r3c2" onclick=""><img src="img/dog.jpg"/></div>`
-            document.getElementById("r1c1").outerHTML = /*HTML*/`<div id="r1c1" onclick="r3c2_riktig()"></div>`
-        }
-        function r3c2_riktig() {
-            document.getElementById("r1c1").outerHTML = /*HTML*/`<div id = "r1c1" onclick="reset()"><img src="img/dog.jpg"/></div>`
-        }
-
-        function r3c3() {
-            runde_to()
-            document.getElementById("r3c3").outerHTML = /*HTML*/`<div id="r3c3" onclick=""><img src="img/elephant.jpg"/></div>`
-            document.getElementById("r4c2").outerHTML = /*HTML*/`<div id="r4c2" onclick="r3c3_riktig()"></div>`
-        }
-        function r3c3_riktig() {
-            document.getElementById("r4c2").outerHTML = /*HTML*/`<div id = "r4c2" onclick="reset()"><img src="img/elephant.jpg"/></div>`
-        }
-
-        function r3c4() {
-            runde_to()
-            document.getElementById("r3c4").outerHTML = /*HTML*/`<div id="r3c4" onclick=""><img src="img/cat.gif"/></div>`
-            document.getElementById("r4c1").outerHTML = /*HTML*/`<div id="r4c1" onclick="r3c4_riktig()"></div>`
-        }
-        function r3c4_riktig() {
-            document.getElementById("r4c1").outerHTML = /*HTML*/`<div id = "r4c1" onclick="reset()"><img src="img/cat.gif"/></div>`
-        }
-
-        function r4c1() {
-            runde_to()
-            document.getElementById("r4c1").outerHTML = /*HTML*/`<div id="r4c1" onclick=""><img src="img/cat.gif"/></div>`
-            document.getElementById("r3c4").outerHTML = /*HTML*/`<div id="r3c4" onclick="r4c1_riktig()"></div>`
-        }
-        function r4c1_riktig() {
-            document.getElementById("r3c4").outerHTML = /*HTML*/`<div id = "r3c4" onclick="reset()"><img src="img/cat.gif"/></div>`
-        }
-
-        function r4c2() {
-            runde_to()
-            document.getElementById("r4c2").outerHTML = /*HTML*/`<div id="r4c2" onclick=""><img src="img/elephant.jpg"/></div>`
-            document.getElementById("r3c3").outerHTML = /*HTML*/`<div id="r3c3" onclick="r4c2_riktig()"></div>`
-        }
-        function r4c2_riktig() {
-            document.getElementById("r3c3").outerHTML = /*HTML*/`<div id = "r3c3" onclick="reset()"><img src="img/elephant.jpg"/></div>`
-        }
-
-        function r4c3() {
-            runde_to()
-            document.getElementById("r4c3").outerHTML = /*HTML*/`<div id="r4c3" onclick=""><img src="img/horse.jpg"/></div>`
-            document.getElementById("r1c3").outerHTML = /*HTML*/`<div id="r1c3" onclick="r4c3_riktig()"></div>`
-        }
-        function r4c3_riktig() {
-            document.getElementById("r1c3").outerHTML = /*HTML*/`<div id = "rc3" onclick="reset()"><img src="img/horse.jpg"/></div>`
-        }
-
-        function r4c4() {
-            runde_to()
-            document.getElementById("r4c4").outerHTML = /*HTML*/`<div id="r4c4" onclick=""><img src="img/tiger.jpg"/></div>`
-            document.getElementById("r2c4").outerHTML = /*HTML*/`<div id="r2c4" onclick="r4c4_riktig()"></div>`
-        }
-        function r4c4_riktig() {
-            document.getElementById("r2c4").outerHTML = /*HTML*/`<div id = "r2c4" onclick="reset()"><img src="img/tiger.jpg"/></div>`
         }
     </script>
 </body>
