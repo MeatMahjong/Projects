@@ -4,9 +4,9 @@ Ta utgangspunkt i denne HTML-koden:
 Kode: https://github.com/GetAcademy/PictureLottox
 Teste: https://getacademy.github.io/PictureLottox
 
-Når siden lastes, skal alle 16 rutene være tomme.
-Når man trykker på en rute, skal bildet for den ruten vises - og alle andre være tomme.
-Når man så trykker på en ny rute, er det to muligheter: 
+1) Når siden lastes, skal alle 16 rutene være tomme.
+2) Når man trykker på en rute, skal bildet for den ruten vises - og alle andre være tomme.
+3) Når man så trykker på en ny rute, er det to muligheter: 
 om man trykker på riktig bilde, vises begge bildene
 ellers går man tilbake til at alle er blanke.
 
