@@ -1,0 +1,15 @@
+<!-- Jeg har lyst til å utfordre dere til å gjøre minst én oppgave sammen som team per uke, vi kan kalle det en teamoppgave. Første utfordring er å lage "bilde lotto". Dere skal kun bruke pensum fra modul 1, dvs. onclick, endre html og funksjoner, men ikke parametre, returverdi variabler eller annet fra modul 2. 
+
+Ta utgangspunkt i denne HTML-koden: 
+Kode: https://github.com/GetAcademy/PictureLottox
+Teste: https://getacademy.github.io/PictureLottox
+
+Når siden lastes, skal alle 16 rutene være tomme.
+Når man trykker på en rute, skal bildet for den ruten vises - og alle andre være tomme.
+Når man så trykker på en ny rute, er det to muligheter: 
+om man trykker på riktig bilde, vises begge bildene
+ellers går man tilbake til at alle er blanke.
+
+Uten skills fra modul 2 kommer vi ikke lengre Dere skal altså bare programmere så det er mulig å finne det første paret med bilder. Men neste uke har dere kanskje kommet langt nok til å lage det ferdig så man kan åpne alle. 
+
+Jeg foreslår at dere starter på dette etter lunsj i dag - men det er helt opp til dere når i uka dere setter av tid til dette.  -->
