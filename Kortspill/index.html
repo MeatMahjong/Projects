@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kortspill</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing:border-box;
+            justify-content: center;
+        }
+        #container {
+            perspective: 1000px;
+            transform-origin: 50% 50%;
+            height: 100vh;
+            overflow: hidden;
+            transform: translateY(-400px);
+        }
+        #field{
+            display: grid;
+            gap:20px;
+            grid-template-columns: repeat(5, 200px);
+            justify-content: center;
+            transform-style:preserve-3d;
+            transform:rotateX(-90deg) translateZ(400px) translateY(500px);
+        }
+        .card {
+            width: 200px;
+            aspect-ratio: calc(1/1.618);
+            background: #aaaaaa;
+            transition: 0.2s;
+            box-shadow: 0 0 10px #000000ff;
+        }
+
+        .card:not(.opponent){
+            transform: rotateZ(180deg);
+        }
+
+        .card:hover:not(.opponent){
+            transform: translateZ(-25px) rotateZ(180deg);
+            box-shadow: 0 0 20px #ffff00ff;
+        }
+
+        .card:hover.opponent{
+            transform: translateZ(-25px);
+            box-shadow: 0 0 20px #ffff00ff;
+        }
+
+        
+        .spacer {
+            height:200px;
+        }
+
+        #hand {
+            display:flex;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="field">
+        </div>
+    </div>
+    <div id="hand"></div>
+    <script>
+        let field = document.getElementById("field")
+        let card = /*html*/`<div class="card" onclick="myfunction(this)"><img src="../Teamoppgaver/Uke2/img/cat.gif" width=200px/></div>`
+        let opponent_card = /*html*/`<div class="card opponent" onclick="myfunction(this)"><img src="../Teamoppgaver/Uke2/img/cat.gif" width=200px/></div>`
+        let spacer = /*html*/`<div class="spacer""></div>`
+        for(let i = 0; i < 10; i++) 
+            field.innerHTML += card
+        for(let i = 0; i < 5; i++)
+            field.innerHTML += spacer;
+        for(let i = 0; i < 10; i++)
+            field.innerHTML += opponent_card;
+        let hand = document.getElementById("hand")
+        let angle = -24;
+        for(let i = 0; i < 5; i++){
+            hand.innerHTML += /*html*/`
+                <div class="card" onclick="myfunction(this)" style=" transform: translateY(${Math.abs(angle*4)-400}px) rotateZ(${angle}deg)">
+                    <img src="../Teamoppgaver/Uke2/img/cat.gif" width=200px/>
+                </div>
+            `
+            angle+=12;
+        }
+        function myfunction(t){
+            t.innerHTML = ""
+        }
+    </script>
+</body>
+</html>
