@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://getacademy.github.io/ChessBoard/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./sjakk/styles.css">
+</head>
+<body class="vsc-initialized">
+    <div id="board">
+
+    </div>
+    <script>
+        let board = document.getElementById("board");
+        let formation = "♜♞♝♛♚♝♞♜"
+        for(let y = 0; y < 8; y++) {
+            for(let x = 0; x < 8; x++) {
+                let piece = y == 0 || y == 7 ? formation.charAt(x) : y == 1 || y == 6 ? "♟" : ""
+                let pieceColor = y >= 4 ? "whitePiece" : "blackPiece"
+                let squareColor = (x+y) % 2 == 0 ? "lightSquare" : "darkSquare" 
+                board.innerHTML += /*html*/`<div class="${squareColor} ${pieceColor}">${piece}</div>`
+        }
+    }
+    </script>
+</body></html>
