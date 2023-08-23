@@ -48,7 +48,6 @@
             `;
         }
 
-
         let leftPos = 24;
         let topPos = 0;
 
@@ -62,62 +61,53 @@
 
 
         function addNormalPuzzlePieceToBoard(){
-            if(leftPos > 0 && leftPos < 24 && topPos > 0 && topPos < 24) {
+            if(leftPos <= 0 || leftPos >= 24 || topPos <= 0 || topPos >= 24) return;
                 addPuzzlePiece('board', true, true, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
                 updatePosition();
-            }
         }
 
         function addPuzzlePieceWithoutTopToBoard() {
-            if(topPos == 0 && leftPos != 0 && leftPos != 24){
-                addPuzzlePiece('board', false, true, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos != 0 || leftPos == 0 || leftPos == 24) return;
+            addPuzzlePiece('board', false, true, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
 
         function addPuzzlePieceWithoutRightToBoard() {
-            if(topPos > 0 && topPos < 24 && leftPos == 24) {
-                addPuzzlePiece('board', true, false, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos <= 0 || topPos >= 24 || leftPos != 24) return;
+            addPuzzlePiece('board', true, false, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
         function addPuzzlePieceWithoutBottomToBoard() {
-            if(leftPos != 0 && leftPos != 24 && topPos == 24){
-                addPuzzlePiece('board', true, true, false, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(leftPos == 0 || leftPos == 24 || topPos!= 24) return;
+            addPuzzlePiece('board', true, true, false, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
         function addPuzzlePieceWithoutLeftToBoard() {
-            if(topPos != 0 && topPos && leftPos == 0) {
-                addPuzzlePiece('board', true, true, true, false, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos <= 0 || topPos >= 24 || leftPos != 0) return;
+            addPuzzlePiece('board', true, true, true, false, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
 
 
         function addPuzzlePieceWithoutTopRightToBoard(){
-            if(topPos == 0 && leftPos == 24) {
-                addPuzzlePiece('board',false, false, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos != 0 || leftPos != 24) return;
+            addPuzzlePiece('board',false, false, true, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
         function addPuzzlePieceWithoutTopLeftToBoard(){
-            if(topPos == 0 && leftPos == 0) {
-                addPuzzlePiece('board',false, true, true, false, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos != 0 || leftPos != 0) return;
+            addPuzzlePiece('board',false, true, true, false, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition()
         }
         function addPuzzlePieceWithoutRightBottomToBoard(){
-            if(topPos == 24 && leftPos == 24) {
-                addPuzzlePiece('board',true, false, false, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos != 24 || leftPos != 24) return;
+            addPuzzlePiece('board',true, false, false, true, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
         function addPuzzlePieceWithoutBottomLeftToBoard(){
-            if(topPos == 24 && leftPos == 0) {
-                addPuzzlePiece('board',true, true, false, false, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
-                updatePosition();
-            }
+            if(topPos != 24 || leftPos != 0) return;
+            addPuzzlePiece('board',true, true, false, false, '', ((leftPos+topPos)/6)%2+1, leftPos, topPos);
+            updatePosition();
         }
 
 

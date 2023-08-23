@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Puzzle
+    </title>
+    <style>
+        :root{
+            --sizeX: 3;
+            --sizeY: 3;
+        }
+        #board {
+            display: grid;
+            grid-template-columns: repeat(var(--sizeX), 11em);
+            grid-template-rows: repeat(var(--sizeY), 11em);
+            .hidden > div {
+                    background:#00ff00 !important;
+                }
+            > div {
+                background: #00ff00;
+                border: 2px solid black;
+                height: 15em;
+                width: 15em;
+                display: grid;
+                grid-template-columns: 5em 5em 5em;
+                grid-template-rows: 5em 5em 5em;
+                > div {
+                    border-radius: 100% 100% 0% 0%;
+                }
+                > [class^="male"] {
+                    background: #000000;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 4;
+                }
+                > [class^="female"] {
+                    background: #00ff00;
+                    rotate: 180deg;
+                    z-index: 3;
+                }
+                > div:nth-child(4) { transform:rotate(-90deg) }
+                > div:nth-child(5) { border-radius: 0; transform:scale(200%); background: black }
+                > div:nth-child(6) { transform:rotate(90deg) }
+                > div:nth-child(8) { transform:rotate(180deg) }
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="board"></div>
+    <div id="tiles"></div>
+    <script>
+        //Model
+        let sizeX = 7;
+        let sizeY = 5;
+        let solution = [];
+        let hiddenArray = Array(sizeX*sizeY).fill(true);
+        let board = document.getElementById("board");
+
+        //Initialization
+        for(let i = 0; i < sizeX*sizeY; i++) {
+            solution.push([(Math.random() > 0.5) + 1, (Math.random() > 0.5) + 1]);
+        }
+        for(let y = 0; y < sizeY; y++){
+            for(let x = 0; x < sizeX; x++) {
+                board.innerHTML += /*html*/`
+                <div onclick="selectTile(${x},${y})"></div>
+                `
+            }
+        }
+        board.style.setProperty("--sizeY", sizeY);
+        board.style.setProperty("--sizeX", sizeX);
+        
+        //View TODO
+        updateView();
+        function updateView() {
+            let html = ""
+            for(let y = 0; y < sizeY; y++) {
+                for(let x = 0; x < sizeX; x++) {
+                    let Right = x == sizeX-1 ? 0 : solution[x][0] == 1 ? 2 : 1;
+                    let Down = y == sizeY-1 ? 0 : solution[y][1] == 1 ? 2 : 1;
+                    let Left = x == 0 ? 0 : solution[x-1][0];
+                    let Up = y == 0 ? 0 : solution[y-1][1];
+                    let hidden = hiddenArray[y*sizeX+x] ? "hidden" : "";
+                    let sides = ["", "male", "female"];
+                    html += /*html*/`
+                        <div onclick="selectTile(${x},${y})" class="${hidden}">
+                            <div></div>
+                            <div class="${sides[Up]}"></div>
+                            <div></div>
+                            <div class="${sides[Left]}"></div>
+                            <div style=""></div>
+                            <div class="${sides[Right]}"></div>
+                            <div></div>
+                            <div class="${sides[Down]}"></div>
+                            <div></div>
+                        </div>
+                    `
+                
+                }
+            }
+            board.innerHTML = html;
+        }
+        
+        function selectTile(x,y){
+            console.log(`${x}, ${y}`);
+            hiddenArray[y*sizeX+x] ^=1;
+            updateView();
+        }
+    </script>
+</body>
+</html>

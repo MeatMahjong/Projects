@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Oppgave</title>
+        <style>
+            #main{
+                display:flex;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main"></div>
+        <script>
+            let sum = 0;
+            let count = 0;
+            let min = 0;
+            let max = 0;
+            let current = null;
+
+            updateView();
+            function updateView(){
+                document.getElementById("main").innerHTML = /*html*/`
+                <div>
+                    <input type="number" oninput="current = this.valueAsNumber" value=${current || ''}/>
+                    <button onclick="addNumber()">legg til tall</button>
+                    Du har lagt til ${count} tall<br/>
+                    Summen er ${sum}<br/>
+                    Gjennomsnittet er ${sum/count}<br/>
+                    Min er ${min}<br/>
+                    Max er ${max}<br/>
+                `
+            }
+            function addNumber(){
+                if(current == undefined) return;
+                sum += current;
+                count ++;
+                min = Math.min(min, current);
+                max = Math.max(max, current);
+                current = null;
+                updateView();
+            }
+        </script>
+    </body>
+</html>
