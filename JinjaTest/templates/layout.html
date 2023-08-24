@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{Title}}</title>
+        <style>
+            #topbar {
+                padding: 1rem;
+                background: #aabbcc;
+                > a {
+                    width: 100em;
+                    padding: 0.5rem;
+                    margin: 0.5rem;
+                    background: #ddeeff;
+                    border-radius: 20px;
+                }
+            }
+            .up-loading {
+                background: #ffff00;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/unpoly@3.3.0/unpoly.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.3.0/unpoly.min.css">
+    </head>
+    <body>
+        {% include "topbar.html" %}
+        <div id = "article">
+            {% include Content %}
+        </div>
+    </body>
+</html>
