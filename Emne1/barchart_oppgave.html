@@ -1,15 +1,5 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body class="vsc-initialized"><div id="content">
-            <svg id="chart" width="500" viewBox="0 0 80 60">
-                <rect width="8" height="70" x="0" y="-10" fill="hsl(240,100%,50%)"></rect><rect width="8" height="30" x="10" y="30" fill="hsl(213.33333333333334,100%,50%)"></rect><rect width="8" height="10" x="20" y="50" fill="hsl(186.66666666666669,100%,50%)"></rect><rect width="8" height="50" x="30" y="10" fill="hsl(160,100%,50%)"></rect><rect width="8" height="80" x="40" y="-20" fill="hsl(133.33333333333334,100%,50%)"></rect>
-            </svg><br>
-            Valgt stolpe: <i>ingen</i>
-            <br>
-            Verdi:
-            <input type="number" min="1" max="10" oninput="inputValue = this.value">
-            <button>Legg til stolpe</button>
-            <button disabled="">Endre valgt stolpe</button><br>
-            <button disabled="">Fjerne valgt stolpe</button>
         </div>
 
 <script>
@@ -17,6 +7,7 @@
     let numbers = [7, 3, 1, 5, 8];
     let chosenBar; // Variabel for hvilken stolpe som er valgt
     let inputValue; // Variabel for hva som er skrevet i input-feltet
+    let errorcode = ""
 
     // view
     updateView();
@@ -26,9 +17,11 @@
             svgInnerHtml += createBar(numbers[i], i + 1);
         }
         document.getElementById('content').innerHTML = /*HTML*/`
-            <svg id="chart" width="500" viewBox="0 0 80 60">
-                ${svgInnerHtml}
-            </svg><br/>
+        <svg id="chart" width="500" viewBox="0 0 80 60">
+            ${svgInnerHtml}
+        </svg><br/>
+        <em style="color: red">${errorcode}</em>
+        <br>
             Valgt stolpe: <i>${chosenBar||"ingen"}</i>
             <br />
             Verdi:
@@ -42,13 +35,16 @@
     // controller
     function addBar() {
         if(inputValue == null || inputValue == '') {
-            alert("Du må oppgi en verdi for å legge til en stolpe")
+            errorcode = "Du må oppgi en verdi for å legge til en stolpe"
+            updateView();
             return;
         }
         if(inputValue < 1 || inputValue > 10) {
-            alert("Stolpene kan bare ha verdi mellom 1-10")
+            errorcode = "Stolpene kan bare ha verdi mellom 1-10"
+            updateView();
             return;
         }
+        errorcode = ""
         numbers.push(inputValue);
         updateView();
     }
@@ -60,9 +56,11 @@
 
     function editBar() {
         if(inputValue < 1 || inputValue > 10) {
-            alert("Stolpene kan bare ha verdi mellom 1-10")
+            errorcode = "Stolpene kan bare ha verdi mellom 1-10"
+            updateView();
             return;
         }
+        errorcode = ""
         numbers[chosenBar-1] = inputValue;
         updateView();
     }
