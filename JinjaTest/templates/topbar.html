@@ -1,3 +1,5 @@
-<nav id = "topbar"><a href="/JinjaTest/index.html" instant up-follow up-target="#article">Home</a>{% for L in Links %}
-    <a href="{{L.url}}" up-instant up-follow up-target="#article">{{L.title}}</a>
-{% endfor %}</nav>
+<nav>
+    <a href="/" instant up-history="true" up-follow up-target="#article">Home</a>
+    <a href="/articles/1" up-instant up-history="true" up-follow up-target="#article">Secret 1</a>
+    <a href="/articles/2" up-instant up-history="true" up-follow up-target="#article">Secret 2</a>
+</nav>

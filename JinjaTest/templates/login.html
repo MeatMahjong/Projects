@@ -1,0 +1,16 @@
+{% if session["username"] %}
+    <form action = "/logout" method="POST">
+        <p>Hello, {{ get_displayname(session["username"]) }}</p>
+        <br>
+        <input type="submit" value="Logout"/>
+    </form>
+{% else %}
+    <form action = "/login" method="POST">
+        <div><label for "username">Username:</label> <input type="text" id="username" name="username"/></div>
+        <div><label for "password">Password:</label> <input type="password" id="password" name="password"/></div>
+        <div>    
+            <input type="submit" value="Login"/>
+            <a href="/register" up-instant up-history="true">Register</a>
+        </div>
+    </form>
+{% endif %}
