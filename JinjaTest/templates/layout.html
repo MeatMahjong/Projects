@@ -3,6 +3,11 @@
     <head>
         <title>{% block Title %}{% endblock %}</title>
         <style>
+
+            html, body {
+                margin: 0;
+            }
+
             .up-loading {
                 background: #ffff00;
             }
@@ -10,11 +15,12 @@
                 display: flex;
                 flex-direction: column;
                 background: #bbccdd;
-                padding: 50px;
+                padding: 30px;
             }
             input {
                 border-radius: 5px;
             }
+            
             
             
             input[type=text], input[type=password] {
@@ -27,9 +33,10 @@
             
             label {
                 display: inline-block;
-                width: 100px;
+                width: 150px;
                 padding: 2px;
                 border-radius: 5px;
+                text-align: end;
             }
 
             #topbar {
@@ -52,10 +59,13 @@
                 }
                 > form {
                     background: #bbccdd;
-                    padding: 50px;
-                    width: 350px;
+                    width: 400px;
                     border-radius: 0 0 30px 30px
                 }
+            }
+
+            #article {
+                padding-left: 100px;
             }
         </style>
         <script src="https://cdn.jsdelivr.net/npm/unpoly@3.3.0/unpoly.min.js"></script>

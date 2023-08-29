@@ -1,7 +1,7 @@
 from flask import Flask, session, request, redirect, url_for, send_from_directory, render_template
-from werkzeug.security import generate_password_hash, check_password_hash
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from argon2 import PasswordHasher
 from dataclasses import dataclass
 from datetime import timedelta
 from os import listdir
@@ -14,6 +14,8 @@ app = Flask(__name__, static_folder="/")
 app.secret_key = "super_secret"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=2)
 app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+ph = PasswordHasher(memory_cost=131072, time_cost=1)
 
 root = "C:/Users/marku/Documents/Projects/JinjaTest"
 
@@ -53,7 +55,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     dbpass = cur.execute(f"SELECT password FROM users WHERE username='{username}'").fetchone()
-    if dbpass is not None and check_password_hash(dbpass[0], password):
+    if dbpass is not None and ph.verify(dbpass[0], password):
         session['username'] = username
         return redirect("/")
     else:
@@ -93,9 +95,7 @@ def register():
             smtpobj.sendmail("noreply@markusme.com", email, message.as_string())
 
             #TODO: Send verification link, and create user after it is clicked
-            before = time.time_ns()
-            cur.execute(f"INSERT INTO users VALUES ('{username}', '{displayname}', '{email}', '{generate_password_hash(password, method='scrypt:32768:8:1')}')")
-            print(time.time_ns()-before)
+            cur.execute(f"INSERT INTO users VALUES ('{username}', '{displayname}', '{email}', '{ph.hash(password)}')")
             con.commit()
             return redirect("/")
     else:
@@ -106,4 +106,5 @@ def logout():
     session.pop('username', None)
     return redirect("/")
 
-app.run(host='0.0.0.0', port=8000, debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8000, debug=True)
