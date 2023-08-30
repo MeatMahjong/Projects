@@ -87,9 +87,9 @@
         // model
         //   hvor er diskene, 0 = venstre tårn, 1 = midten, 2 = høyre
         //   alle starter til venstre
-        let smallDiskTowerIndex = 0;
-        let mediumDiskTowerIndex = 0;
-        let largeDiskTowerIndex = 0;
+        let smallPos = 0;
+        let mediumPos = 0;
+        let largePos = 0;
 
         // view 
         updateView();
@@ -98,17 +98,23 @@
                 <div class="game-container">
                     <div class="tower-container">
                         <div class="tower">
-                            <div class="disk" style="width: 70px"></div>                            
+                            ${largePos == 0 ? '<div class="disk" style="width: 70px"></div>' : ''}
+                            ${mediumPos == 0 ? '<div class="disk" style="width: 50px"></div>' : ''}
+                            ${smallPos == 0 ? '<div class="disk" style="width: 30px"></div>' : ''}           
                         </div>
                     </div>
                     <div class="tower-container">
                         <div class="tower">
-                            <div class="disk" style="width: 50px"></div>
+                            ${largePos == 1 ? '<div class="disk" style="width: 70px"></div>' : ''}
+                            ${mediumPos == 1 ? '<div class="disk" style="width: 50px"></div>' : ''}
+                            ${smallPos == 1 ? '<div class="disk" style="width: 30px"></div>' : ''}    
                          </div>
                     </div>
                     <div class="tower-container">
                         <div class="tower">
-                            <div class="disk" style="width: 30px"></div>                            
+                            ${largePos == 2 ? '<div class="disk" style="width: 70px"></div>' : ''}
+                            ${mediumPos == 2 ? '<div class="disk" style="width: 50px"></div>' : ''}
+                            ${smallPos == 2 ? '<div class="disk" style="width: 30px"></div>' : ''}                              
                         </div>
                     </div>
                 </div>
@@ -118,31 +124,41 @@
                 <button onclick="moveSmallDisk(2)">høyre tårn</button>
                 <br/>
                 Flytt medium disk
-                <button onclick="moveMediumDisk(0)">venstre tårn</button>
-                <button onclick="moveMediumDisk(1)">midtre tårn</button>
-                <button onclick="moveMediumDisk(2)">høyre tårn</button>
+                ${canMoveMedium(0) ? '<button onclick="moveMediumDisk(0)">venstre tårn</button>' : ''}
+                ${canMoveMedium(1) ? '<button onclick="moveMediumDisk(1)">midtre tårn</button>' : ''}
+                ${canMoveMedium(2) ? '<button onclick="moveMediumDisk(2)">høyre tårn</button>' : ''}
                 <br/>
                 Flytt stor disk
-                <button onclick="moveLargeDisk(0)">venstre tårn</button>
-                <button onclick="moveLargeDisk(1)">midtre tårn</button>
-                <button onclick="moveLargeDisk(2)">høyre tårn</button>
+                ${canMoveLarge(0) ? '<button onclick="moveLargeDisk(0)">venstre tårn</button>' : ''}
+                ${canMoveLarge(1) ? '<button onclick="moveLargeDisk(1)">midtre tårn</button>' : ''}
+                ${canMoveLarge(2) ? '<button onclick="moveLargeDisk(2)">høyre tårn</button>' : ''}
                 <br/>
             `;
         }
 
         // controller
-        function moveSmallDisk(toTowerIndex) {
-
+        function moveSmallDisk(to) {
+            smallPos = to;
             updateView();
         }
 
-        function moveMediumDisk(toTowerIndex) {
-
+        function canMoveMedium(to) {
+            if(smallPos == to || smallPos == mediumPos) return false;
+            return true;
+        }
+        function moveMediumDisk(to) {
+            if(!canMoveMedium(to)) return;
+            mediumPos = to;
             updateView();
         }
 
-        function moveLargeDisk(toTowerIndex) {
-
+        function canMoveLarge(to) {
+            if(smallPos == to || mediumPos == to || smallPos == largePos || mediumPos == largePos) return false;
+            return true;
+        }
+        function moveLargeDisk(to) {
+            if(!canMoveLarge(to)) return;
+            largePos = to;
             updateView();
         }
 

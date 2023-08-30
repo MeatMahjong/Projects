@@ -1,0 +1,29 @@
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 100px);
+    grid-template-rows: repeat(8, 100px);
+}
+
+.whitePiece {
+    color: white;
+    text-shadow: 1px 1px gray;
+}
+
+.blackPiece {
+    color: black;
+}
+
+.lightSquare,
+.darkSquare {
+    font-size: 450%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.lightSquare {
+    background-color: rgb(240, 217, 181);
+}
+
+.darkSquare {
+    background-color: rgb(181, 136, 99);
+}

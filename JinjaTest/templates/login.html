@@ -1,4 +1,4 @@
-{% if session["username"] %}
+{% if "username" in session %}
     <form action = "/logout" method="POST">
         <p>Hello, {{ get_displayname(session["username"]) }}</p>
         <br>
