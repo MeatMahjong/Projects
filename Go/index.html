@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go</title>
+    <style>
+        #app {
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            width: 900px;
+            height: 900px;
+            overflow: hidden;
+            #board {
+                overflow:visible;
+                display: grid;
+                grid-template-columns: repeat(19, 50px);
+                grid-template-rows: repeat(19, 50px);
+                > div {
+                    background: linear-gradient(90deg, #fff 24px, #000 24px, #000 26px, #fff 26px),
+                        linear-gradient(0deg, #fff 24px, #000 24px, #000 26px, #fff 26px),
+                        #fd6;
+                    background-blend-mode: multiply;
+                    text-shadow: #555A 3px 3px 3px;
+                    mix-blend-mode: soft-light;
+                    width: 50px;
+                    height: 50px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    > p {
+                        font-size: 40pt;
+                        transform: translate(0px, -3px);
+                    }
+                }
+            }
+        }
+        
+        .white {
+            color: white;
+        }
+        
+        .black {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="board">
+        </div>
+    </div>
+    <script>
+        //model
+        //view
+        updateView();
+        function updateView() {
+            let board = document.getElementById("board");
+            board.innerHTML = ""
+            for(let y = 0; y < 19; y++) {
+                for(let x = 0; x < 19; x++) {
+                    let point = "";
+                    let classes = "";
+                    if((x == 3 || x == 9 || x == 15) 
+                        && (y == 3 || y == 9 || y == 15)) point = "⬤";
+                    if(x == 4 && y == 3) {
+                        point = "⬤";
+                        classes += "white";
+                    }
+                    board.innerHTML += /*html*/`<div class="${classes}" test><p>${point}</p></div>`
+                }
+            }
+        }
+        //controller
+
+        //helper function
+        function freedoms(x,y) {
+            let adjacent = [];
+            const directions = [
+                {dx : -1, dy:  0},
+                {dx :  1, dy:  0},
+                {dx :  0, dy: -1},
+                {dx :  0, dy:  1},
+            ];
+            for(const dir of directions) {
+                const newX = x + dir.dx;
+                const newY = y + dir.dy;
+                if(newX >= 0 && newX <= 18 && newY >= 0 && newY <= 18)
+                    adjacent.push({x: newX, y: newY});
+            }
+            const piece = board[y][x];
+            const other = x => y => board[y][x]
+            let result = adjacent.filter((obj) => !piece || other(obj.x, obj.y) == piece); 
+            return adjacent.length;;
+        }
+    </script>
+</body>
+</html>
