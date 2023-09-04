@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stigespill</title>
+
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(9, 50px);
+            grid-template-rows: repeat(10, 50px);
+        }
+
+        .square {
+            background: rgb(255, 231, 98);
+            border: solid black 1px;
+            text-align: right;
+            text-align: end;
+        }
+
+        .red {
+            background: rgb(239, 82, 71);
+        }
+
+        .green {
+            background: lightgreen;
+        }
+
+        .roll,
+        button {
+            border: 0;
+            /* background-color: transparent; */
+            font-size: 40pt;
+            cursor: pointer;
+        }
+
+        button:hover {
+            color: red;
+        }
+
+        #player {
+            margin-top: 5px;
+            margin-left: 12px;
+            position: absolute;
+            font-size: 32pt;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        //Model
+        let playerPosition = 1;
+        let roll = null;
+        let turns = 0;
+
+        //View
+        updateView();
+        function updateView() {
+            let app = document.getElementById("app");
+            let HTML = '<div class="board">';
+            for (let i = 9; i >= 0; i--) {
+                let oddRow = i % 2 == 0;
+                let start = oddRow ? (i * 9 + 1) : (i * 9 + 9);
+                let change = oddRow ? 1 : -1;
+                HTML += createRow(start, change);
+            }
+            HTML += '</div></br>'
+
+            let dice = roll == null ? "" : /*HTML*/`${"⚀⚁⚂⚃⚄⚅".charAt(roll - 1)}</div>`
+
+            HTML += /*html*/`<div class ="roll"><button id="diceButton" onclick="diceRoll()">Roll🎲</button>` + dice;
+
+            let Y = Math.floor((playerPosition - 1) / 9);
+            let top = 450 - (Y * 50);
+
+            let X = (playerPosition - 1) % 9;
+            if (Y % 2 != 0) X = 8 - X;
+            let left = X * 50;
+
+            HTML += /*html*/`<div id="player" style = "top:${top}px; left:${left}px" >♛</div>`
+            HTML += turns == 0 ? '' : /*HTML*/`<div>Kast nr. ${turns}</div>`
+
+            app.innerHTML = HTML;
+            checkWin();
+        }
+        // punkt 1
+        function createRow(startValue, change) {
+            let rows = "";
+            for (let i = 0; i < 9; i++) {
+                let squareNo = startValue + change * i;
+                let color = "";
+                let ladder = getLadderFrom(squareNo);
+                if (ladder != null) {
+                    color = ladder > squareNo ? "green" : "red";
+                }
+                rows += /*html*/`<div class="square ${color}">${squareNo}<br/>${ladder ? " to " + ladder : ""}</div>`;
+            }
+            return rows;
+        }
+
+        function getLadderFrom(squareNo) {
+            if (squareNo == 2) return 40;
+            if (squareNo == 8) return 10;
+            if (squareNo == 24) return 5;
+            if (squareNo == 33) return 3;
+            if (squareNo == 36) return 52;
+            if (squareNo == 42) return 30;
+            if (squareNo == 43) return 62;
+            if (squareNo == 49) return 79;
+            if (squareNo == 56) return 37;
+            if (squareNo == 64) return 27;
+            if (squareNo == 65) return 82;
+            if (squareNo == 68) return 85;
+            if (squareNo == 74) return 12;
+            if (squareNo == 87) return 70;
+            return null;
+        }
+
+        function checkWin() {
+            if (playerPosition == 90) {
+                document.getElementById('diceButton').onclick = null;
+                setTimeout(function () {
+                    alert('Gratulerer! Du vant')
+                }, 200);
+            }
+        }
+
+        //Controller
+        function diceRoll() {
+            roll = Math.ceil(Math.random() * 6)
+            playerPosition += roll;
+            if (getLadderFrom(playerPosition) != null) playerPosition = getLadderFrom(playerPosition);
+            if (playerPosition >= 90) playerPosition = 90;
+            turns++;
+            updateView();
+        }
+    </script>
+</body>
+
+</html>
