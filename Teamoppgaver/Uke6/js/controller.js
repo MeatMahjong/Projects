@@ -20,6 +20,7 @@ function buyCoke() {
         coinsReturned = coinsReturned.map((v, i) => v+returned[i]);
         cokesInStore--;
         isCokeInDelivery = true;
+        cokeInHandCount ++;
         updateView();
     }
 }
@@ -30,6 +31,7 @@ function emptyCoke(){
          //b)  og palssere denne ved strekmannen? coke-empty.png har jeg lagt i mappen
     isCokeInDelivery = false;
     cokeIsEmpty ++;
+    cokeInHandCount --;
     updateView();
 }
 
@@ -45,7 +47,15 @@ function insertCoin(value){
 }
 
 function returnCoins(){
-    coinsReturned = [...coinsInserted];
-    coinsInserted = [0,0,0,0];
+    // hvordan endre denne slik at Angre-knappen bare virker på insertedCoin med returnCoins ikke tømmer Mynt- og cola-utkast?
+    // Må få coinsReturned += -> funker ikke. 
+    // Markus 1: coinsReturned = coinsReturned.map((v, i) => v + coinsInserted[i]);
+    // 
+   coinsReturned = [...coinsInserted]; 
+   coinsInserted = [0,0,0,0];
     updateView();
+}
+function takeCoins(){
+    coinsReturned = [0,0,0,0];
+      updateView();
 }

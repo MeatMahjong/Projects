@@ -40,7 +40,7 @@ function updateView() {
                     <button onclick="insertCoin(10)">Putte inn 10kr</button>
                     <button onclick="insertCoin(20)">Putte inn 20kr</button>
                     <button onclick="returnCoins()">Angre</button>
-                    <button>Ta myntene</button>
+                    <button onclick="takeCoins()">Ta myntene</button>
                     <button onclick="buyCoke()">Kjøpe cola</button>
                     <button onclick="emptyCoke()">Drikk cola</button>
                 </div>
