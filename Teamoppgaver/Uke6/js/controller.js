@@ -24,6 +24,15 @@ function buyCoke() {
     }
 }
 
+function emptyCoke(){
+    // må sette isCokeInDelivery = false 
+         // a) Hvordan introdusere cokeIsEmpty med tom flaske...
+         //b)  og palssere denne ved strekmannen? coke-empty.png har jeg lagt i mappen
+    isCokeInDelivery = false;
+    cokeIsEmpty ++;
+    updateView();
+}
+
 function insertCoin(value){
     const index = 
         value == 1 ? 0 : 

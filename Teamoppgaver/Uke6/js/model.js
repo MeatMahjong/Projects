@@ -18,3 +18,4 @@ let coinsReturned = [
 ];
 let cokesInStore = 10;
 let isCokeInDelivery = false;
+let cokeIsEmpty = 0; 
