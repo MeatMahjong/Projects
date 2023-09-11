@@ -1,7 +1,27 @@
 function buyCoke() {
-    cokesInStore--;
-    isCokeInDelivery = true;
-    updateView();
+    let sum = valueFromCoinCounts(coinsInserted);
+    if(sum >= 25) {
+        let returned = [0,0,0,0];
+        for(let i = 3; i >= 0; i--) {
+            while(sum - coinValue(i) >= 25 && coinsInMachine[i]) {
+                returned[i]++;
+                coinsInMachine[i]--;
+                sum -= coinValue(i);
+            }
+        }
+        if(sum != 25) {
+            coinsInMachine = coinsInMachine.map((v,i) => v + returned[i]);
+            coinsReturned = [...coinsInserted];
+            coinsInserted = [0,0,0,0];
+            updateView();
+            return;
+        }
+        coinsInserted = [0,0,0,0];
+        coinsReturned = coinsReturned.map((v, i) => v+returned[i]);
+        cokesInStore--;
+        isCokeInDelivery = true;
+        updateView();
+    }
 }
 
 function insertCoin(value){
