@@ -3,21 +3,20 @@ function buyCoke() {
     if(sum >= 25) {
         let returned = [0,0,0,0];
         for(let i = 3; i >= 0; i--) {
-            while(sum - coinValue(i) >= 25 && coinsInMachine[i]) {
-                returned[i]++;
-                coinsInMachine[i]--;
-                sum -= coinValue(i);
-            }
+            let x = Math.floor((sum-25)/coinValue(i));
+            returned[i] += x;
+            coinsInMachine[i] -= x;
+            sum -= coinValue(i) * x;
         }
         if(sum != 25) {
-            coinsInMachine = coinsInMachine.map((v,i) => v + returned[i]);
+            coinsInMachine = coinsInMachine.map((v, i) => v + returned[i]);
             coinsReturned = [...coinsInserted];
             coinsInserted = [0,0,0,0];
             updateView();
             return;
         }
         coinsInserted = [0,0,0,0];
-        coinsReturned = coinsReturned.map((v, i) => v+returned[i]);
+        coinsReturned = coinsReturned.map((v, i) => v + returned[i]);
         cokesInStore--;
         isCokeInDelivery = true;
         updateView();

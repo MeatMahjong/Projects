@@ -6,12 +6,14 @@
     <title>Go</title>
     <style>
         #app {
+            margin: 100px;
+            user-select: none;
             display:flex;
             align-items: center;
             justify-content: center;
             width: 900px;
             height: 900px;
-            overflow: hidden;
+            overflow: visible;
             #board {
                 overflow:visible;
                 display: grid;
@@ -52,47 +54,106 @@
         </div>
     </div>
     <script>
-        //model
+        //"use strict";
+        
+        //Model
+        let points = [];
+        for(let i = 0; i < 19; i++) points.push(Array(19).fill(null));
+
+        let blackCaptures = 0;
+        let whiteCaptures = 0;
+
+        let currentPlayer = "black";
+
+        const directions = [
+            {x: -1, y: +0},
+            {x: +1, y: +0},
+            {x: +0, y: -1},
+            {x: +0, y: +1},
+        ];
+
         //view
         updateView();
         function updateView() {
+            let setInnerHTML = (str) => document.getElementById("board").innerHTML = str;
             let board = document.getElementById("board");
-            board.innerHTML = ""
+            let html = "";
             for(let y = 0; y < 19; y++) {
                 for(let x = 0; x < 19; x++) {
                     let point = "";
-                    let classes = "";
-                    if((x == 3 || x == 9 || x == 15) 
-                        && (y == 3 || y == 9 || y == 15)) point = "⬤";
-                    if(x == 4 && y == 3) {
-                        point = "⬤";
-                        classes += "white";
-                    }
-                    board.innerHTML += /*html*/`<div class="${classes}" test><p>${point}</p></div>`
+                    point = points[y][x] ? "⏺" : (x == 3 || x == 9 || x == 15) 
+                                                 && (y == 3 || y == 9 || y == 15) ? "🞄"  : "";
+                    html += /*html*/`<div class="${points[y][x]}" onclick="placeStone(${x},${y})"><p>${point}</p></div>`;
                 }
             }
+            board.innerHTML = html;
         }
-        //controller
 
-        //helper function
-        function freedoms(x,y) {
-            let adjacent = [];
-            const directions = [
-                {dx : -1, dy:  0},
-                {dx :  1, dy:  0},
-                {dx :  0, dy: -1},
-                {dx :  0, dy:  1},
-            ];
-            for(const dir of directions) {
-                const newX = x + dir.dx;
-                const newY = y + dir.dy;
-                if(newX >= 0 && newX <= 18 && newY >= 0 && newY <= 18)
-                    adjacent.push({x: newX, y: newY});
+        //Controller
+
+        //Ko rule is not implemented
+        function placeStone(x,y) {
+            if(points[y][x] != null) return;
+            points[y][x] = currentPlayer; //Place the stone. We'll remove it later if the placement was invalid.
+            for(const {x:dx, y:dy} of directions) {
+                let newX = x + dx;
+                let newY = y + dy;
+                if(inBounds(newX, newY) && points[newY][newX] != null && points[newY][newX] != currentPlayer) {
+                    //We check and remove any enemy groups without liberties after placing the stone
+                    let group = liberties(newX, newY);
+                    if(group.libs == 0) {
+                        if(currentPlayer == "white") whiteCaptures += group.group.length;
+                        else blackCaptures += group.group.length;
+                        group.group.forEach((e) => points[e.y][e.x] = null);
+                    } 
+                }
             }
-            const piece = board[y][x];
-            const other = x => y => board[y][x]
-            let result = adjacent.filter((obj) => !piece || other(obj.x, obj.y) == piece); 
-            return adjacent.length;;
+            if(liberties(x,y).libs == 0) {
+                alert("Self capture not allowed");
+                //If we have 0 liberties, we can't have removed any enemy stones, so we only have to undo this
+                points[y][x] = null;
+                return;
+            }
+            currentPlayer = currentPlayer == "black" ? "white" : "black";
+            updateView();
+        }
+
+        //Helper functions
+        function inBounds(x,y) { 
+            return (x >= 0 && x < 19 && y >= 0 && y < 19);
+        }
+
+        function sameColor(x,y,color) {
+            return inBounds(x,y) && points[y][x] == color;
+        }
+
+        //Precondition: points[y][x] is a valid non-null point
+        function liberties(x,y) {
+            let color = points[y][x];
+            let contiguous = [];
+
+            if(color == null) return {libs: 0, group: []};
+
+            //Depth first search to get all connected pieces
+            (function dfs(x,y) {
+                contiguous.push({x:x,y:y});
+                for(const {x:dx, y:dy} of directions) {
+                    let newX = x + dx;
+                    let newY = y + dy;
+                    if(sameColor(newX,newY,color) && !contiguous.some((e) => e.x == newX && e.y == newY)) 
+                        dfs(newX, newY);
+                }
+            })(x,y);
+            
+            //Count the liberties of the group
+            let libs = 0;
+            for(let p of contiguous) for(const {x: dx, y: dy} of directions) {
+                let newX = p.x + dx;
+                let newY = p.y + dy;
+                if(inBounds(newX, newY) && points[newY][newX] == null)
+                    libs++;
+            }
+            return {libs: libs, group: contiguous};
         }
     </script>
 </body>
