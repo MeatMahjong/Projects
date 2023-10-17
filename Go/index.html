@@ -55,6 +55,7 @@
     </div>
     <script>
         //"use strict";
+        // @ts-check
         
         //Model
         let points = [];
@@ -155,6 +156,43 @@
             }
             return {libs: libs, group: contiguous};
         }
+
+
+        /**
+         * @typedef Task
+         * @type {Object}
+         * @property {string} name 
+         * @property {boolean} isFinished
+         * @property {string} [date_range]
+         * @property {string} [description]
+         * @property {number} [priority]
+         * @property {number} [physical_difficulty]
+         * @property {Array<Subtask>} [subtasks]
+         */
+
+         /**
+         * @typedef Subtask
+         * @type {Object}
+         * @property {string} name
+         * @property {boolean} isFinished
+         */
+
+        const model = {
+            app: {
+                /** @type {Array<Task>}  */
+                tasks: [{name: "Clean", isFinished:false}],
+                names: [],
+
+            },
+            inputs: {
+
+            },
+        }
+        
+        let x = new Date()
+        let y = x-Date.now()
+
+        model.app.tasks[0].
     </script>
 </body>
 </html>
